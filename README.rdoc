@@ -1,6 +1,6 @@
 = glutton_ratelimit
 
-Ruby library for rate limiting method invocations. (Bursty / Naive Implementation) 
+Ruby library for rate-limiting method invocations. (Bursty / Naive Implementation) 
 
 == License
 

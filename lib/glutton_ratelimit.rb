@@ -31,18 +31,3 @@ class GluttonRatelimit
 end
 
 
-number = 6
-rt = GluttonRatelimit.new number, 12
-
-start_time = Time.now
-counter = 0
-
-while true
-  rt.wait
-  current_time = Time.now
-  elapsed = current_time - start_time
-  counter += 1
-  puts "#{counter} : #{elapsed}"
-  sleep 1.5
-  
-end
