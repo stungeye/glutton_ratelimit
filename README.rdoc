@@ -2,6 +2,11 @@
 
 Ruby library for rate-limiting method invocations. (Bursty / Naive Implementation) 
 
+Implemented some of the algorithms found here:
+
+http://stackoverflow.com/questions/1407113/throttling-method-calls-to-m-requests-in-n-seconds
+http://stackoverflow.com/questions/667508/whats-a-good-rate-limiting-algorithm
+
 == License
 
 This is free and unencumbered software released into the public domain. See LICENSE for details.
