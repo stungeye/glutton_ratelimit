@@ -1,6 +1,8 @@
 module GluttonRatelimit
   
 private
+  # All the other classes extend this parent and are therefore
+  # constructed in the same manner.
   class ParentLimiter
     attr_reader :executions
     
@@ -63,31 +65,24 @@ public
     def reset_bucket
       @oldest_timestamp = Time.now
       @tokens = @executions
-      @elapsed = 0
+      @total_task_time = 0
     end
     
     def wait
-      if @tokens > 0
-        executed = @executions - @tokens
-        if (executed != 0)
-          delta_from_last = Time.now - @before_previous_execution
-          @elapsed += delta_from_last
-          average_time = @elapsed.to_f / executed 
-          remaining = @time_period - (Time.now - @oldest_timestamp)
-          throttle = ((remaining.to_f+delta_from_last )/ (@tokens+1)) - average_time
-          #puts "Average #{average_time} : Remain #{remaining} : Throttle #{throttle} : Before #{throttle + average_time}"
-          sleep throttle if throttle > 0
-        end
-      else
-        delta_from_start = Time.now - @oldest_timestamp
-        #sleep(@time_period - delta_from_start) if delta_from_start < @time_period
-        if delta_from_start < @time_period
-          #puts "Course Corrections #{@time_period - delta_from_start}"
-          sleep(@time_period - delta_from_start)
-          
-        end 
+      executed_this_period = @executions - @tokens
+      remaining_time = @time_period - (Time.now - @oldest_timestamp)
+      
+      if @tokens.zero?
+        sleep(remaining_time) if remaining_time > 0
         reset_bucket
+      elsif executed_this_period != 0
+          delta_since_previous = Time.now - @before_previous_execution
+          @total_task_time += delta_since_previous
+          average_task_time = @total_task_time.to_f / executed_this_period
+          throttle = (remaining_time.to_f + delta_since_previous) / (@tokens+1) - average_task_time
+          sleep throttle if throttle > 0
       end
+      
       @tokens -= 1
       @before_previous_execution = Time.now
     end
