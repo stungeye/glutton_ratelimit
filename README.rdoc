@@ -1,11 +1,34 @@
 = glutton_ratelimit
 
-Ruby library for rate-limiting method invocations. (Bursty / Naive Implementation) 
+Ruby library for rate-limiting method invocations.
 
-Implemented some of the algorithms found here:
+== Example
 
-http://stackoverflow.com/questions/1407113/throttling-method-calls-to-m-requests-in-n-seconds
-http://stackoverflow.com/questions/667508/whats-a-good-rate-limiting-algorithm
+    # Maximum of 12 executions every 5 seconds.
+    rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
+    
+    25.times do
+      # BurstyTokenBucket will allow for a full burst of executions followed by a pause.
+      rl.wait
+      # Simulating a constant-time task:
+      sleep 0.1
+    end
+    
+    # Maximum of 6 executions every 6 seconds.
+    rl = GluttonRatelimit::AveragedThrottle.new 6, 6
+    13.times do
+      # AverageThrottle will attempt to evenly space executions within the allowed period.
+      rl.wait
+      # Simulating a 0 to 1 second random-time task:
+      sleep rand
+    end
+    
+== Thanks
+
+Some of the algorithms were inspired by these discussions:
+
+* http://stackoverflow.com/questions/667508/whats-a-good-rate-limiting-algorithm
+* http://stackoverflow.com/questions/1407113/throttling-method-calls-to-m-requests-in-n-seconds
 
 == License
 
