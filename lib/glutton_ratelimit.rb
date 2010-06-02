@@ -1,6 +1,6 @@
 module GluttonRatelimit
   
-  def limit_method symbol, executions, time_period, rl_class = AveragedThrottle
+  def rate_limit symbol, executions, time_period, rl_class = AveragedThrottle
     rl = rl_class.new executions, time_period
     old_symbol = "#{symbol}_old".to_sym
     alias_method old_symbol, symbol
