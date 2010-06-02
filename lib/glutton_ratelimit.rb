@@ -1,4 +1,15 @@
 module GluttonRatelimit
+  
+  def limit_method symbol, executions, time_period, rl_class = AveragedThrottle
+    rl = rl_class.new executions, time_period
+    old_symbol = "#{symbol}_old".to_sym
+    alias_method old_symbol, symbol
+    define_method symbol do |*args|
+      rl.wait
+      self.send old_symbol, *args
+    end
+  end
+  
   private
   # All the other classes extend this parent and are therefore
   # constructed in the same manner.
