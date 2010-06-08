@@ -38,6 +38,10 @@ The rate_limit method can be used at the end of a class definition to limit spec
     
     10.times { t.limit_me }
 
+When using the rate_limit method the limiting defaults to GluttonRatelimit::AveragedThrottle. Token Bucket limiting can also be specified:
+
+    rate_limite :limit_me, 6, 6, GluttonRatelimit::BurstyTokenBucket
+
 == Simple Manual Limiting
 
 Chunks of code can also be manually throttled using the wait method of a specific GluttonRatelimit object.
@@ -76,7 +80,7 @@ There are two types of rate limiting provided by this library:
 
 The inaccuracy of Ruby's sleep method causes problems when trying to rate-limit methods which take less than 0.001 seconds to execute.
 
-See: http://codeidol.com/other/rubyckbk/Date-and-Time/Waiting-a-Certain-Amount-of-Time/
+See: http://codeidol.com/other/rubyckbk/Date-and-Time/Waiting-a-Certain-Amount-of-Time
     
 == Thanks
 
