@@ -38,9 +38,9 @@ The rate_limit method can be used at the end of a class definition to limit spec
     
     10.times { t.limit_me }
 
-== Simple Manual Example
+== Simple Manual Limiting
 
-Chunks of code can also be manually throttled using the wait method of a specific GluttonRatelimit objects.
+Chunks of code can also be manually throttled using the wait method of a specific GluttonRatelimit object.
 
     # Maximum of twelve executions every five seconds.
     rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
@@ -69,12 +69,8 @@ More examples can be found within the examples folder.
 
 There are two types of rate limiting provided by this library:
 
-* Bursty Token Bucket Limiting
-* Average Throttle Limiting
-
-=== Bursty Token Bucket
-    
-=== Average Throttle
+* Bursty Token Bucket Limiting (GluttonRatelimit::BurstyTokenBucket)
+* Average Throttle Limiting (GluttonRatelimit::AveragedThrottle)
 
 == Warnings
 
