@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "glutton_ratelimit"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Ruby library for self-imposed rate limiting of methods.}
+    gem.description = %Q{A Ruby library for limiting the number of times a method can be invoked within a specified time period.}
     gem.email = "stungeye@gmail.com"
     gem.homepage = "http://github.com/stungeye/glutton_ratelimit"
     gem.authors = ["Wally Glutton"]
