@@ -72,9 +72,15 @@ There are two types of rate limiting provided by this library:
 * Bursty Token Bucket Limiting
 * Average Throttle Limiting
 
-=== Bursy Token Bucket
-
+=== Bursty Token Bucket
+    
 === Average Throttle
+
+== Warnings
+
+The inaccuracy of Ruby's sleep method causes problems when trying to rate-limit methods which take less than 0.001 seconds to execute.
+
+See: http://codeidol.com/other/rubyckbk/Date-and-Time/Waiting-a-Certain-Amount-of-Time/
     
 == Thanks
 
