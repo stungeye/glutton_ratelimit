@@ -11,7 +11,34 @@ You might wish to use this library to throttle code that:
 * Accesses a 3rd-party API that imposes a maximum rate-limit. 
 * Scrapes data from any website where rapid repeated access is banned.
 
-For example, Echo Nest API requests need to be limited to 120 every minute.
+For example, EchoNest API requests need to be limited to 120 every minute.
+
+== Types of Limiting
+
+There are two types of rate limiting provided by this library:
+
+* Bursty Token Bucket Limiting (GluttonRatelimit::BurstyTokenBucket)
+* Average Throttle Limiting (GluttonRatelimit::AveragedThrottle)
+
+=== Bursty Token Bucket
+
+If executions are limited to n times per m seconds then:
+
+1. n executions will be allowed immediately.
+2. Before the next execution the process will sleep to wait for the current m second time period to elapse.
+3. The process is repeated.
+
+The amount of time slept in step 2 will depend on how long the n executions took in step 1.
+
+=== Average Throttle
+
+If executions are limited to n times per m seconds then:
+
+1. The first execution will occur immediately.
+2. Before each of the remaining n-1 executions the process will attempt to sleep so that the executions are evenly spaced within the m second time period.
+3. The process is repeated.
+
+The amount of time slept before each execution will depend on both the time period m and the amount of time each task takes to execute.
 
 == Instant Method Limiting
     
@@ -30,7 +57,6 @@ The rate_limit method can be used at the end of a class definition to limit spec
       end
       
       # Maximum of six limit_me executions every six seconds.
-      # Defaults to the AveragedThrottle limiting.
       rate_limit :limit_me, 6, 6
     end
     
@@ -69,19 +95,12 @@ Chunks of code can also be manually throttled using the wait method of a specifi
 
 More examples can be found within the examples folder.
 
-== Types of Limiting
-
-There are two types of rate limiting provided by this library:
-
-* Bursty Token Bucket Limiting (GluttonRatelimit::BurstyTokenBucket)
-* Average Throttle Limiting (GluttonRatelimit::AveragedThrottle)
-
 == Warnings
 
-The inaccuracy of Ruby's sleep method causes problems when trying to rate-limit methods which take less than 0.001 seconds to execute.
+The inaccuracy of Ruby's sleep method may cause slight problems when trying to rate-limit methods which take less than 0.001 seconds to execute.
 
 See: http://codeidol.com/other/rubyckbk/Date-and-Time/Waiting-a-Certain-Amount-of-Time
-    
+     
 == Thanks
 
 Some of the algorithms were inspired by these discussions:
