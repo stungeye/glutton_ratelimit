@@ -2,22 +2,23 @@
 
 A Ruby library for limiting the number of times a method can be invoked within a specified time period.
 
-Methods are blocked using sleep (not queued) when limiting is applied.
+The rate-limiting is simple if somewhat naïve. Throttled methods are blocked using sleep.
 
 == Use Cases
 
 You might wish to use this library to throttle code that:
 
 * Accesses a 3rd-party API that imposes a maximum rate-limit. 
-* Scrapes data any website where rapid repeated access is banned.
+* Scrapes data from any website where rapid repeated access is banned.
 
-For example, Echo Nest requests should be limited to 120 every minute.
+For example, Echo Nest API requests need to be limited to 120 every minute.
 
 == Instant Method Limiting
     
-The rate_limit method can be used at the end of a class definition to limit specific methods. 
+The rate_limit method can be used at the end of a class definition to limit specific instance methods. 
         
     class LimitInstanceMethod
+      # The class must be extended to permit limiting.
       extend GluttonRatelimit
         
       def initialize
@@ -38,6 +39,8 @@ The rate_limit method can be used at the end of a class definition to limit spec
     10.times { t.limit_me }
 
 == Simple Manual Example
+
+Chunks of code can also be manually throttled using the wait method of a specific GluttonRatelimit objects.
 
     # Maximum of twelve executions every five seconds.
     rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
@@ -64,7 +67,14 @@ More examples can be found within the examples folder.
 
 == Types of Limiting
 
+There are two types of rate limiting provided by this library:
 
+* Bursty Token Bucket Limiting
+* Average Throttle Limiting
+
+=== Bursy Token Bucket
+
+=== Average Throttle
     
 == Thanks
 
