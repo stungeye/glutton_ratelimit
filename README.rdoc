@@ -4,9 +4,18 @@ A Ruby library for limiting the number of times a method can be invoked within a
 
 Methods are blocked using sleep (not queued) when limiting is applied.
 
+== Use Cases
+
+You might wish to use this library to throttle code that:
+
+* Accesses a 3rd-party API that imposes a maximum rate-limit. 
+* Scrapes data any website where rapid repeated access is banned.
+
+For example, Echo Nest requests should be limited to 120 every minute.
+
 == Instant Method Limiting
     
-The rate_limit method can be used at the end of a class definition to limit specific methods.
+The rate_limit method can be used at the end of a class definition to limit specific methods. 
         
     class LimitInstanceMethod
       extend GluttonRatelimit
@@ -19,7 +28,7 @@ The rate_limit method can be used at the end of a class definition to limit spec
         puts "#{Time.now - @start}"
       end
       
-      # Maximum of 6 limit_me executions every 6 seconds.
+      # Maximum of six limit_me executions every six seconds.
       # Defaults to the AveragedThrottle limiting.
       rate_limit :limit_me, 6, 6
     end
@@ -30,7 +39,7 @@ The rate_limit method can be used at the end of a class definition to limit spec
 
 == Simple Manual Example
 
-    # Maximum of 12 executions every 5 seconds.
+    # Maximum of twelve executions every five seconds.
     rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
     
     25.times do
@@ -40,7 +49,7 @@ The rate_limit method can be used at the end of a class definition to limit spec
       sleep 0.1
     end
     
-    # Maximum of 6 executions every 6 seconds.
+    # Maximum of six executions every six seconds.
     rl = GluttonRatelimit::AveragedThrottle.new 6, 6
     13.times do
       # AverageThrottle will attempt to evenly space executions within the allowed period.
@@ -52,6 +61,10 @@ The rate_limit method can be used at the end of a class definition to limit spec
 == More Examples
 
 More examples can be found within the examples folder.
+
+== Types of Limiting
+
+
     
 == Thanks
 
