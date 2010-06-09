@@ -25,7 +25,7 @@ There are two types of rate limiting provided by this library:
 If executions are limited to n times per m seconds then:
 
 1. n executions will be allowed immediately.
-2. Before the next execution the process will sleep to wait for the remainder of the m second time period to elapse.
+2. Before the next execution the process will sleep for the remainder of the m second time period.
 3. The process is repeated.
 
 The amount of time slept in step 2 will depend on how long the n executions took in step 1.
@@ -38,9 +38,9 @@ If executions are limited to n times per m seconds then:
 2. Before each of the remaining n-1 executions the process will attempt to sleep so that the executions are evenly spaced within the m second time period.
 3. The process is repeated.
 
-The amount of time slept before each execution will depend on both the time period m and the average elapsed time of each execution.
+The amount of time slept before each execution will depend on the time period m and the average elapsed time of each execution.
 
-== Instant Method Limiting
+== Instance Method Limiting
     
 The rate_limit method can be used at the end of a class definition to limit specific instance methods. 
         
@@ -56,7 +56,7 @@ The rate_limit method can be used at the end of a class definition to limit spec
         puts "#{Time.now - @start}"
       end
       
-      # Maximum of six limit_me executions every six seconds.
+      # Throttle the limit_me method to six executions every six seconds.
       rate_limit :limit_me, 6, 6
     end
     
@@ -97,10 +97,22 @@ More examples can be found within the examples folder.
 
 == Warnings
 
-The inaccuracy of Ruby's sleep method may cause slight problems when trying to rate-limit methods which take less than 0.001 seconds to execute.
+Before using the library you should be aware of the following warnings.
+
+=== Short Tasks and AveragedThrottle
+
+The inaccuracy of Ruby's sleep method may cause slight problem with the AveragedThrottle limiting. Specifically, there limiting accuracy can be slightly-off when trying to rate-limit methods which take less than 0.001 seconds to execute.
 
 See: http://codeidol.com/other/rubyckbk/Date-and-Time/Waiting-a-Certain-Amount-of-Time
-     
+
+It is recommend that you use the BurstyTokenBucket limiting when throttling very short tasks.
+
+=== Naive Throttling
+
+As mentioned above the throttling is accomplish by blocking script execution using sleep. There is no support for dropping or queuing throttled method invocations.
+
+This library is not thread safe.
+
 == Thanks
 
 Some of the algorithms were inspired by these discussions:
