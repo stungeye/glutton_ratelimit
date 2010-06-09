@@ -101,7 +101,7 @@ Before using the library you should be aware of the following warnings.
 
 === Short Tasks and AveragedThrottle
 
-The inaccuracy of Ruby's sleep method may cause slight problem with the AveragedThrottle limiting. Specifically, there limiting accuracy can be slightly-off when trying to rate-limit methods which take less than 0.001 seconds to execute.
+The inaccuracy of Ruby's sleep method may cause timing issues with the AveragedThrottle limiting. Specifically, the limiting accuracy may be slightly-off when trying to rate-limit quick methods (sub-millisecond tasks).
 
 See: http://codeidol.com/other/rubyckbk/Date-and-Time/Waiting-a-Certain-Amount-of-Time
 
