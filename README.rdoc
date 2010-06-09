@@ -25,7 +25,7 @@ There are two types of rate limiting provided by this library:
 If executions are limited to n times per m seconds then:
 
 1. n executions will be allowed immediately.
-2. Before the next execution the process will sleep to wait for the current m second time period to elapse.
+2. Before the next execution the process will sleep to wait for the remainder of the m second time period to elapse.
 3. The process is repeated.
 
 The amount of time slept in step 2 will depend on how long the n executions took in step 1.
@@ -38,7 +38,7 @@ If executions are limited to n times per m seconds then:
 2. Before each of the remaining n-1 executions the process will attempt to sleep so that the executions are evenly spaced within the m second time period.
 3. The process is repeated.
 
-The amount of time slept before each execution will depend on both the time period m and the amount of time each task takes to execute.
+The amount of time slept before each execution will depend on both the time period m and the average elapsed time of each execution.
 
 == Instant Method Limiting
     
