@@ -1,1 +1,193 @@
-Project Page
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>glutton_ratelimit on github</title>
+    </head>
+    <body>
+<h1>glutton_ratelimit</h1>
+<p> 
+A Ruby library for limiting the number of times a method can be invoked
+within a specified time period.
+</p> 
+<p> 
+The rate-limiting is simple if somewhat naïve. Throttled methods are
+blocked using sleep.
+</p> 
+<h2>Use Cases</h2> 
+<p> 
+You might wish to use this library to throttle code that:
+</p> 
+<ul> 
+<li>Accesses a 3rd-party API that imposes a maximum rate-limit.
+ 
+</li> 
+<li>Scrapes data from any website where rapid repeated access is banned.
+ 
+</li> 
+</ul> 
+<p> 
+For example, EchoNest API requests need to be limited to 120 every minute.
+</p> 
+<h2>Types of Limiting</h2> 
+<p> 
+There are two types of rate limiting provided by this library:
+</p> 
+<ul> 
+<li>Bursty Token Bucket Limiting (GluttonRatelimit::BurstyTokenBucket)
+ 
+</li> 
+<li>Average Throttle Limiting (GluttonRatelimit::AveragedThrottle)
+ 
+</li> 
+</ul> 
+<h3>Bursty Token Bucket</h3> 
+<p> 
+If executions are limited to n times per m seconds then:
+</p> 
+<ol> 
+<li>n executions will be allowed immediately.
+ 
+</li> 
+<li>Before the next execution the process will sleep for the remainder of the m
+second time period.
+ 
+</li> 
+<li>The process is repeated.
+ 
+</li> 
+</ol> 
+<p> 
+The amount of time slept in step 2 will depend on how long the n executions
+took in step 1.
+</p> 
+<h3>Average Throttle</h3> 
+<p> 
+If executions are limited to n times per m seconds then:
+</p> 
+<ol> 
+<li>The first execution will occur immediately.
+ 
+</li> 
+<li>Before each of the remaining n-1 executions the process will attempt to
+sleep so that the executions are evenly spaced within the m second time
+period.
+ 
+</li> 
+<li>The process is repeated.
+ 
+</li> 
+</ol> 
+<p> 
+The amount of time slept before each execution will depend on the time
+period m and the average elapsed time of each execution.
+</p> 
+<h2>Instance Method Limiting Example</h2> 
+<p> 
+The rate_limit method can be used at the end of a class definition to limit
+specific instance methods.
+</p> 
+<pre> 
+    class LimitInstanceMethod
+      # The class must be extended to permit limiting.
+      extend GluttonRatelimit
+ 
+      def initialize
+        @start = Time.now
+      end
+ 
+      def limit_me
+        puts &quot;#{Time.now - @start}&quot;
+      end
+ 
+      # Throttle the limit_me method to six executions every six seconds.
+      rate_limit :limit_me, 6, 6
+    end
+ 
+    t = LimitInstanceMethod.new
+ 
+    10.times { t.limit_me }
+</pre> 
+<p> 
+When using the rate_limit method the limiting defaults to
+GluttonRatelimit::AveragedThrottle. Token Bucket limiting can also be
+specified:
+</p> 
+<pre> 
+    rate_limite :limit_me, 6, 6, GluttonRatelimit::BurstyTokenBucket
+</pre> 
+<h2>Simple Manual Limiting Example</h2> 
+<p> 
+Chunks of code can also be manually throttled using the wait method of a
+specific GluttonRatelimit object.
+</p> 
+<pre> 
+    # Maximum of twelve executions every five seconds.
+    rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
+ 
+    25.times do
+      # BurstyTokenBucket will allow for a full burst of executions followed by a pause.
+      rl.wait
+      # Simulating a constant-time task:
+      sleep 0.1
+    end
+ 
+    # Maximum of six executions every six seconds.
+    rl = GluttonRatelimit::AveragedThrottle.new 6, 6
+    13.times do
+      # AverageThrottle will attempt to evenly space executions within the allowed period.
+      rl.wait
+      # Simulating a 0 to 1 second random-time task:
+      sleep rand
+    end
+</pre> 
+<h2>More Examples</h2> 
+<p> 
+More examples can be found within the examples folder.
+</p> 
+<h2>Warnings</h2> 
+<p> 
+Before using the library you should be aware of the following warnings.
+</p> 
+<h3>Short Tasks and AveragedThrottle</h3> 
+<p> 
+The inaccuracy of Ruby&#8217;s sleep method may cause timing issues with
+the AveragedThrottle limiting. Specifically, the limiting accuracy may be
+slightly-off when trying to rate-limit quick methods (sub-millisecond
+tasks).
+</p> 
+<p> 
+See: <a href="http://codeidol.com/other/rubyckbk/Date-and-Time/Waiting-a-Certain-Amount-of-Time">codeidol.com/other/rubyckbk/Date-and-Time/Waiting-a-Certain-Amount-of-Time</a> 
+</p> 
+<p> 
+It is recommend that you use the BurstyTokenBucket limiting when throttling
+very short tasks.
+</p> 
+<h3>Naive Throttling</h3> 
+<p> 
+As mentioned above, throttling is accomplish by blocking script execution
+using sleep. There is no support for dropping or queuing throttled method
+invocations.
+</p> 
+<p> 
+This library is not thread safe.
+</p> 
+<h2>Thanks</h2> 
+<p> 
+Some of the algorithms were inspired by these discussions:
+</p> 
+<ul> 
+<li><a href="http://stackoverflow.com/questions/667508/whats-a-good-rate-limiting-algorithm">stackoverflow.com/questions/667508/whats-a-good-rate-limiting-algorithm</a> 
+ 
+</li> 
+<li><a href="http://stackoverflow.com/questions/1407113/throttling-method-calls-to-m-requests-in-n-seconds">stackoverflow.com/questions/1407113/throttling-method-calls-to-m-requests-in-n-seconds</a> 
+ 
+</li> 
+</ul> 
+<h2>License</h2> 
+<p> 
+This is free and unencumbered software released into the public domain. See
+LICENSE for details.
+</p>
+</body>
+</html>
