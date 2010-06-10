@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'glutton_ratelimit'
 
-puts "Maximum of 12 executions every 5 seconds:"
+puts "Maximum of 12 executions every 5 seconds (Bursty):"
 rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
 
 start = Time.now
@@ -15,7 +15,7 @@ end
 
 # The 25th execution should occur after 10 seconds has elapsed.
 
-puts "Maximum of 3 executions every 3 seconds."
+puts "Maximum of 3 executions every 3 seconds (Averaged):"
 rl = GluttonRatelimit::AveragedThrottle.new 3, 3
 
 start = Time.now

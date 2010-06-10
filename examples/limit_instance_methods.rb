@@ -24,7 +24,11 @@ end
 
 t = LimitInstanceMethods.new
 
-puts "Six requests every 6 seconds Averaged: "
-10.times { t.limit_me }
-puts "Six requests every 6 seconds Bursty: "
-10.times { t.cap_me }
+puts "Six requests every 6 seconds (Averaged): "
+13.times { t.limit_me }
+puts "Six requests every 6 seconds (Bursty): "
+13.times { t.cap_me }
+
+# In both cases:
+# The 7th execution should occur after 6 seconds after the first.
+# The 13th execution should occur after 12 seconds after the first.
