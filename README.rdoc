@@ -13,6 +13,12 @@ You might wish to use this library to throttle code that:
 
 For example, EchoNest API requests need to be limited to 120 every minute.
 
+== Installation
+
+    sudo gem install glutton_ratelimit
+    
+The gem is hosted at: http://rubygems.org/gems/glutton_ratelimit
+
 == Types of Limiting
 
 There are two types of rate limiting provided by this library:
