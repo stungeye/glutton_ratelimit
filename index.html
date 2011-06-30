@@ -124,19 +124,18 @@ specific GluttonRatelimit object.
 <pre> 
     # Maximum of twelve executions every five seconds.
     rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
+    # BurstyTokenBucket will allow for a full burst of executions followed by a pause.
  
-    25.times do
-      # BurstyTokenBucket will allow for a full burst of executions followed by a pause.
-      rl.wait
+    rl.times(25) do
       # Simulating a constant-time task:
       sleep 0.1
     end
  
     # Maximum of six executions every six seconds.
     rl = GluttonRatelimit::AveragedThrottle.new 6, 6
-    13.times do
-      # AverageThrottle will attempt to evenly space executions within the allowed period.
-      rl.wait
+    # AverageThrottle will attempt to evenly space executions within the allowed period.
+
+    rl.times(13) do
       # Simulating a 0 to 1 second random-time task:
       sleep rand
     end
