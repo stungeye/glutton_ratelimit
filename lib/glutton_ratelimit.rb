@@ -20,6 +20,15 @@ module GluttonRatelimit
       @executions = executions
       @time_period = time_period
     end
+    
+    def times(num, &block)
+      raise ArgumentError, "Code block expected"  if not block
+      raise ArgumentError, "Parameter expected to be Fixnum but found a #{num.class}."  unless num.class.equal?(Fixnum)
+      num.times do
+        wait
+        yield
+      end
+    end
   end
 end
 
