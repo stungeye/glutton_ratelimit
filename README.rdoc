@@ -76,7 +76,7 @@ When using the rate_limit method the limiting defaults to GluttonRatelimit::Aver
 
 == Simple Manual Limiting Example
 
-Chunks of code can also be manually throttled using the wait method of a specific GluttonRatelimit object.
+Chunks of code can also be manually throttled using the times method of a specific GluttonRatelimit object.
 
     # Maximum of twelve executions every five seconds.
     rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
