@@ -26,13 +26,13 @@ module TestingModule
     assert delta >= min_time
   end
   
-  def test_50_tasks_every_second_with_fast_task
+  def test_50_tasks_every_second_with_no_task
     min_time = 1
     rl = @testClass.new 50, min_time
     delta = timed_run(rl) { sleep 0 }
     #puts "#{delta} >? #{min_time}"
-    # Allowed to be off by 0.1% since there is no task time.
-    assert((delta / min_time) > 0.999)
+    # Allowed to be off by 0.5% since there is no task time.
+    assert((delta / min_time) > 0.995)
   end
   
   def test_1_task_every_1_seconds_with_1_second_task
@@ -55,9 +55,8 @@ module TestingModule
     min_time = 0.5
     rl = @testClass.new 120, min_time
     delta = timed_run(rl, 2) { sleep 0 }
-    assert delta >= min_time * 2
-    # Allowed to be off by 0.1% since there is no task time.
-    assert((delta / (min_time * 2)) > 0.999)
+    # Allowed to be off by 0.5% since there is no task time.
+    assert((delta / (min_time * 2)) > 0.995)
   end
   
   def test_10_tasks_every_1_seconds_two_runs_with_short_rnd_task
