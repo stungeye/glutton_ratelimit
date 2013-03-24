@@ -50,11 +50,15 @@ The amount of time slept before each execution will depend on the time period m 
     
 The rate_limit method can be used at the end of a class definition to limit specific instance methods. 
 
-    rate_limit :name_of_instance_method, <Number of Executions>, <Timeframe in Seconds>
+    rate_limit :name_of_instance_method, number_of_executions, timeframe_in_seconds
 
-The specified instance method will be throlled to maintain an execution rate of `<Timeframe in Seconds> / <Number of Executions>`.
-        
-    class LimitInstanceMethod
+The specified instance method will be throlled to maintain an execution rate of:
+
+    timeframe_in_seconds / number_of_executions
+
+==== An example where the limit_me instance method of the RateLimitTest class is throlled:
+
+    class RateLimitTest
       # The class must be extended to permit limiting.
       extend GluttonRatelimit
         
@@ -70,7 +74,7 @@ The specified instance method will be throlled to maintain an execution rate of 
       rate_limit :limit_me, 5, 60
     end
     
-    t = LimitInstanceMethod.new
+    t = RateLimitTest.new
     
     10.times { t.limit_me }
 
