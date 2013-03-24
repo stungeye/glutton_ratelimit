@@ -49,6 +49,10 @@ The amount of time slept before each execution will depend on the time period m 
 == Instance Method Limiting Example
     
 The rate_limit method can be used at the end of a class definition to limit specific instance methods. 
+
+    rate_limit :name_of_instance_method, <Number of Executions>, <Timeframe in Seconds>
+
+The specified instance method will be throlled to maintain an execution rate of `<Timeframe in Seconds> / <Number of Executions>`.
         
     class LimitInstanceMethod
       # The class must be extended to permit limiting.
@@ -62,8 +66,8 @@ The rate_limit method can be used at the end of a class definition to limit spec
         puts "#{Time.now - @start}"
       end
       
-      # Throttle the limit_me method to six executions every six seconds.
-      rate_limit :limit_me, 6, 6
+      # Throttle the limit_me method to five executions every sixty seconds.
+      rate_limit :limit_me, 5, 60
     end
     
     t = LimitInstanceMethod.new
@@ -72,7 +76,7 @@ The rate_limit method can be used at the end of a class definition to limit spec
 
 When using the rate_limit method the limiting defaults to GluttonRatelimit::AveragedThrottle. Token Bucket limiting can also be specified:
 
-    rate_limite :limit_me, 6, 6, GluttonRatelimit::BurstyTokenBucket
+    rate_limite :limit_me, 5, 60, GluttonRatelimit::BurstyTokenBucket
 
 == Simple Manual Limiting Example
 
