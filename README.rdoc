@@ -56,7 +56,7 @@ The specified instance method will be throlled to maintain an execution rate of:
 
     timeframe_in_seconds / number_of_executions
 
-==== An example where the limit_me instance method of the RateLimitTest class is throlled:
+==== An example where the limit_me instance method of the RateLimitTest class is throttled:
 
     class RateLimitTest
       # The class must be extended to permit limiting.
