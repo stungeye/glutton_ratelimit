@@ -23,8 +23,18 @@ The gem is hosted at: http://rubygems.org/gems/glutton_ratelimit
 
 There are two types of rate limiting provided by this library:
 
+* Average Throttle Limiting (GluttonRatelimit::AveragedThrottle) DEFAULT
 * Bursty Token Bucket Limiting (GluttonRatelimit::BurstyTokenBucket)
-* Average Throttle Limiting (GluttonRatelimit::AveragedThrottle)
+
+=== Average Throttle (Default Mode)
+
+If executions are limited to n times per m seconds then:
+
+1. The first execution will occur immediately.
+2. Before each of the remaining n-1 executions the process will attempt to sleep so that the executions are evenly spaced within the m second time period.
+3. The process is repeated.
+
+The amount of time slept before each execution will depend on the time period m and the average elapsed time of each execution.
 
 === Bursty Token Bucket
 
@@ -35,16 +45,6 @@ If executions are limited to n times per m seconds then:
 3. The process is repeated.
 
 The amount of time slept in step 2 will depend on how long the n executions took in step 1.
-
-=== Average Throttle
-
-If executions are limited to n times per m seconds then:
-
-1. The first execution will occur immediately.
-2. Before each of the remaining n-1 executions the process will attempt to sleep so that the executions are evenly spaced within the m second time period.
-3. The process is repeated.
-
-The amount of time slept before each execution will depend on the time period m and the average elapsed time of each execution.
 
 == Instance Method Limiting Example
     
@@ -125,6 +125,12 @@ It is recommend that you use the BurstyTokenBucket limiting when throttling very
 As mentioned above, throttling is accomplish by blocking script execution using sleep. There is no support for dropping or queuing throttled method invocations.
 
 This library is not thread safe.
+
+== Tests
+
+The tests integration/timing tests with a tolerance of 0.5 of a percent outside the expected timings.
+
+The tests can be run using: `bundle exec rake test`
 
 == Thanks
 

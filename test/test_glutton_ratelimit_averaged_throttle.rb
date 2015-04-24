@@ -2,7 +2,7 @@ require 'helper'
 require 'testing_module.rb'
 
 class TestGluttonRatelimitAveragedThrottle < Test::Unit::TestCase
-  include TestingModule
+  include TestingModule # All the shared tests are in here.
   
   def setup
     @testClass = GluttonRatelimit::AveragedThrottle
