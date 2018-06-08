@@ -24,17 +24,11 @@ module GluttonRatelimit
     def times(num, &block)
       raise ArgumentError, "Code block expected"  if not block
 
-      raise ArgumentError, "Parameter expected to be #{expected_num_class.to_s} but found a #{num.class}."  unless num.class.equal?(expected_num_class)
+      raise ArgumentError, "Parameter expected to be #{Integer.to_s} but found a #{num.class}."  unless num.class.equal?(Integer)
       num.times do
         wait
         yield
       end
-    end
-
-    private
-
-    def expected_num_class
-      RUBY_VERSION < "2.4" ? Fixnum : Integer
     end
   end
 end
