@@ -3,7 +3,7 @@ module GluttonRatelimit
   class BurstyRingBuffer < ParentLimiter
     
     def oldest_timestamp
-      @timestamps = Array.new executions, (Time.now - @time_period) if @timestamps.nil?
+      @timestamps ||= Array.new executions, (Time.now - @time_period) 
       @timestamps[0]
     end
     
