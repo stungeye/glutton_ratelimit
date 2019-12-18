@@ -1,5 +1,9 @@
 = glutton_ratelimit
 
+NOTE: This library is no longer under active development. Pull requests are, however, still being accepted.
+
+I recommend using the ruby-limiter gem instead: https://github.com/Shopify/limiter
+
 A Ruby library for limiting the number of times a method can be invoked within a specified time period.
 
 The rate-limiting is simple if somewhat naïve. Throttled methods are blocked using sleep.
@@ -8,7 +12,7 @@ The rate-limiting is simple if somewhat naïve. Throttled methods are blocked us
 
 You might wish to use this library to throttle code that:
 
-* Accesses a 3rd-party API that imposes a maximum rate-limit. 
+* Accesses a 3rd-party API that imposes a maximum rate-limit.
 * Scrapes data from any website where rapid repeated access is banned.
 
 For example, EchoNest API requests need to be limited to 120 every minute.
@@ -16,7 +20,7 @@ For example, EchoNest API requests need to be limited to 120 every minute.
 == Installation
 
     sudo gem install glutton_ratelimit
-    
+
 The gem is hosted at: http://rubygems.org/gems/glutton_ratelimit
 
 == Types of Limiting
@@ -47,8 +51,8 @@ If executions are limited to n times per m seconds then:
 The amount of time slept in step 2 will depend on how long the n executions took in step 1.
 
 == Instance Method Limiting Example
-    
-The rate_limit method can be used at the end of a class definition to limit specific instance methods. 
+
+The rate_limit method can be used at the end of a class definition to limit specific instance methods.
 
     rate_limit :name_of_instance_method, number_of_executions, timeframe_in_seconds
 
@@ -61,21 +65,21 @@ The specified instance method will be throlled to maintain an execution rate of:
     class RateLimitTest
       # The class must be extended to permit limiting.
       extend GluttonRatelimit
-        
+
       def initialize
         @start = Time.now
       end
-      
+
       def limit_me
         puts "#{Time.now - @start}"
       end
-      
+
       # Throttle the limit_me method to five executions every sixty seconds.
       rate_limit :limit_me, 5, 60
     end
-    
+
     t = RateLimitTest.new
-    
+
     10.times { t.limit_me }
 
 When using the rate_limit method the limiting defaults to GluttonRatelimit::AveragedThrottle. Token Bucket limiting can also be specified:
@@ -89,21 +93,21 @@ Chunks of code can also be manually throttled using the times method of a specif
     # Maximum of twelve executions every five seconds.
     rl = GluttonRatelimit::BurstyTokenBucket.new 12, 5
     # BurstyTokenBucket will allow for a full burst of executions followed by a pause.
-    
+
     rl.times(25) do
       # Simulating a constant-time task:
       sleep 0.1
     end
-    
+
     # Maximum of six executions every six seconds.
     rl = GluttonRatelimit::AveragedThrottle.new 6, 6
     # AverageThrottle will attempt to evenly space executions within the allowed period.
-    
+
     rl.times(13) do
       # Simulating a 0 to 1 second random-time task:
       sleep rand
     end
-    
+
 == More Examples
 
 More examples can be found within the examples folder.
