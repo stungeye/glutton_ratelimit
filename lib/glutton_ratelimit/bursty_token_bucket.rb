@@ -1,6 +1,10 @@
 module GluttonRatelimit
   
   class BurstyTokenBucket < ParentLimiter
+    def initialize executions, time_period
+      super(executions, time_period)
+      @tokens = nil
+    end
     
     def reset_bucket
       @oldest_timestamp = Time.now

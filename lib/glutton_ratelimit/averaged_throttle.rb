@@ -1,9 +1,12 @@
 module GluttonRatelimit
-  
   class AveragedThrottle < ParentLimiter
+    def initialize executions, time_period
+      super(executions, time_period)
+      @tokens = nil
+    end
     
     def reset_bucket
-      @before_previous_execution = Time.now if @before_previous_execution.nil?
+      @before_previous_execution ||= Time.now 
       @oldest_timestamp = Time.now
       @tokens = @executions
       @total_task_time = 0
@@ -19,7 +22,7 @@ module GluttonRatelimit
     
     def wait
       reset_bucket if @tokens.nil?
-      
+
       now = Time.now
       delta_since_previous = now - @before_previous_execution
       @total_task_time += delta_since_previous
@@ -36,9 +39,7 @@ module GluttonRatelimit
       @tokens -= 1
       @before_previous_execution = Time.now
     end
-    
   end
-
 end
 
 
