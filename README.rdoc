@@ -21,11 +21,11 @@ For example, EchoNest API requests need to be limited to 120 every minute.
 
     gem install glutton_ratelimit
     
-Or add the gem to your project Gemfile.
+Or add the gem to your project Gemfile:
 
-If you need to use this gem with Ruby version 2.3 or ealier, use version 0.2.0 of the gem:
-
-    gem install glutton_ratelimit -v 0.2.0
+    gem 'glutton_ratelimit'
+    
+If you need to use this gem with Ruby version 2.3 or ealier, use version 0.2.0 of the gem.
 
 == Types of Limiting
 
