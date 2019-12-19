@@ -138,7 +138,7 @@ This library is not thread safe.
 
 The tests integration/timing tests with a tolerance of 0.5 of a percent outside the expected timings.
 
-The tests can be run using: `bundle exec rake test`
+The tests can be run using: +bundle exec rake test+
 
 == Thanks
 
