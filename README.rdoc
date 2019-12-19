@@ -8,6 +8,8 @@ A Ruby library for limiting the number of times a method can be invoked within a
 
 The rate-limiting is simple if somewhat naïve. Throttled methods are blocked using sleep.
 
+The 1.x.x version of the library is designed to work with Ruby 2.4+. Please use version 0.2.0 if you need to support an ealier version of Ruby.
+
 == Use Cases
 
 You might wish to use this library to throttle code that:
@@ -20,11 +22,11 @@ For example, EchoNest API requests need to be limited to 120 every minute.
 == Installation
 
     gem install glutton_ratelimit
-    
+
 Or add the gem to your project Gemfile:
 
     gem 'glutton_ratelimit'
-    
+
 If you need to use this gem with Ruby version 2.3 or ealier, use version 0.2.0 of the gem.
 
 == Types of Limiting
@@ -138,7 +140,7 @@ This library is not thread safe.
 
 The tests integration/timing tests with a tolerance of 0.5 of a percent outside the expected timings.
 
-The tests can be run using: 
+The tests can be run using:
 
     bundle exec rake test
 
