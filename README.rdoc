@@ -8,7 +8,9 @@ A Ruby library for limiting the number of times a method can be invoked within a
 
 The rate-limiting is simple if somewhat naïve. Throttled methods are blocked using sleep.
 
-The 1.x.x version of the library is designed to work with Ruby 2.4+. Please use version 0.2.0 if you need to support an ealier version of Ruby.
+The 1.x.x version of the library is designed to work with Ruby 2.4+. This is because the library was upgraded to use the +Integer+ class instead of +Fixnum+.
+
+Please use version 0.2.0 if you need to support an ealier version of Ruby.
 
 == Use Cases
 
