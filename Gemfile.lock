@@ -44,7 +44,7 @@ GEM
       rack (>= 1.2, < 3)
     power_assert (1.1.5)
     psych (3.1.0)
-    rack (2.0.8)
+    rack (2.2.3)
     rake (13.0.1)
     rdoc (6.2.0)
     semver2 (3.4.2)
